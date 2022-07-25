@@ -74,3 +74,10 @@ path.treeArcHighlight {
   position: absolute;
   z-index: 999 !important;
 }
+
+.glow {
+  font-size: 22px;
+  color: black;
+  text-align: center;
+  animation: glow 1s ease-in-out infinite alternate;
+}

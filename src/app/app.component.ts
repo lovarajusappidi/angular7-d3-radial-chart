@@ -4819,7 +4819,23 @@ export class AppComponent implements OnInit, AfterViewInit {
       });
 
     nodes
-      .on('mouseover', (d) => {
+      .on('mouseover', (event, d) => {
+        if (
+          event &&
+          event.target &&
+          event.target.parentNode &&
+          event.target.parentNode.children
+        ) {
+          for (let item of event.target.parentNode.children) {
+            if (item.nodeName == 'circle') {
+              item.setAttribute('r', '15');
+            }
+            if (item.nodeName == 'text') {
+              item.classList.add('nodeTextHighlight');
+              item.classList.add('glow');
+            }
+          }
+        }
         // scope.flag = false;
         // scope.setNewRootData = d;
         // if (d.type == 'input' || d.type == 'output' || d.isRoot) {
@@ -4926,7 +4942,23 @@ export class AppComponent implements OnInit, AfterViewInit {
         //   }
         // }
       })
-      .on('mouseout', function (d) {
+      .on('mouseout', function (event, d) {
+        if (
+          event &&
+          event.target &&
+          event.target.parentNode &&
+          event.target.parentNode.children
+        ) {
+          for (let item of event.target.parentNode.children) {
+            if (item.nodeName == 'circle') {
+              item.setAttribute('r', '6');
+            }
+            if (item.nodeName == 'text') {
+              item.classList.remove('nodeTextHighlight');
+              item.classList.remove('glow');
+            }
+          }
+        }
         // if (!d3.select('#dvTooltip').empty()) {
         //   d3.select('#dvTooltip').transition().remove();
         // }
