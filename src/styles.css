@@ -59,3 +59,18 @@ path.input {
   fill: none;
   stroke-width: 1.5px;
 }
+
+path.treeArcHighlight {
+  stroke: black !important;
+  fill: none;
+  stroke-width: 3.5px;
+}
+
+.nodeTextHighlight {
+  font-size: 20px !important;
+  opacity: 1 !important;
+  font-weight: bold !important;
+  color: black !important;
+  position: absolute;
+  z-index: 999 !important;
+}

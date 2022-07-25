@@ -4728,7 +4728,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       .selectAll('.link')
       .data(treeData.links())
       .join('path')
-      .attr('class', 'link')
       .attr(
         'd',
         d3
@@ -4738,23 +4737,29 @@ export class AppComponent implements OnInit, AfterViewInit {
       );
 
     links.attr('class', (d) => {
-      if (d.target.data.type === 'input') {
-        return 'link input';
-      } else if (d.target.data.type === 'output') {
-        return 'link output';
+      if (d.target) {
+        if (d.target.data.type === 'input') {
+          return 'link input';
+        } else if (d.target.data.type === 'output') {
+          return 'link output';
+        } else {
+          return 'link model';
+        }
       } else {
-        return 'link model';
+        return 'link';
       }
     });
 
     links
-      .on('mouseover', function (d) {
-        // scope.flag = false;
-        // scope.setNewRootData = d;
-        // setArcHighlight(d);
+      .on('mouseover', (event, d) => {
+        if (event && event.target) {
+          event.target.classList.add('treeArcHighlight');
+        }
       })
-      .on('mouseout', function (d) {
-        // removeArcHighlight();
+      .on('mouseout', (event, d) => {
+        if (event && event.target) {
+          event.target.classList.remove('treeArcHighlight');
+        }
       });
 
     let nodes = svg
