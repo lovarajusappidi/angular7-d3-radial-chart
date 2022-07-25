@@ -4657,13 +4657,19 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   createRadialTree(input) {
-    let height = 1200;
-    let width = 1200;
+    let height = 1000;
+    let width = 1000;
+
+    let zoom = d3.zoom()
+						.scaleExtent([0.1, 100])
+						.on("zoom", () => {
+            });
 
     let svg = d3
       .select('#chart')
       .append('svg')
-      .attr('width', width)
+      .call(zoom)
+      .attr('width', '100%')
       .attr('height', height);
 
     let diameter = height * 0.75;
@@ -4728,4 +4734,21 @@ export class AppComponent implements OnInit, AfterViewInit {
         return d.data.name;
       });
   }
+
+  // zoomed() {
+  //   $('.visual-dd').attr('style', 'display:none;');
+  //   scope.flag = false;
+  //   svg
+  //     .select('#links')
+  //     .attr(
+  //       'transform',
+  //       'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
+  //     );
+  //   svg
+  //     .select('#nodes')
+  //     .attr(
+  //       'transform',
+  //       'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
+  //     );
+  // }
 }
