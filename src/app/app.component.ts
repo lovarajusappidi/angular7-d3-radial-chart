@@ -4660,10 +4660,23 @@ export class AppComponent implements OnInit, AfterViewInit {
     let height = 1000;
     let width = 1000;
 
-    let zoom = d3.zoom()
-						.scaleExtent([0.1, 100])
-						.on("zoom", () => {
-            });
+    let zoom = d3
+      .zoom()
+      .scaleExtent([0.1, 100])
+      .on('zoom', () => {
+        // svg
+        //   .select('#links')
+        //   .attr(
+        //     'transform',
+        //     'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
+        //   );
+        // svg
+        //   .select('#nodes')
+        //   .attr(
+        //     'transform',
+        //     'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
+        //   );
+      });
 
     let svg = d3
       .select('#chart')
@@ -4683,16 +4696,35 @@ export class AppComponent implements OnInit, AfterViewInit {
       });
 
     let data = d3.hierarchy(input);
-
     let treeData = tree(data);
 
-    let nodes = treeData.descendants();
+    svg
+      .append('defs')
+      .selectAll('marker')
+      .data(['input', 'output', 'model'])
+      .enter()
+      .append('marker')
+      .attr('id', function (d) {
+        return d;
+      })
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 20)
+      .attr('refY', -0.9)
+      .attr('markerWidth', 5)
+      .attr('markerHeight', 5)
+      .attr('markerunits', 'userSpaceOnUse')
+      .attr('orient', 'auto')
+      .append('path')
+      .attr('d', 'M0,-5L10,0L0,5') //M0,0 V4 L5,2 Z10")M0,-5L10,0L0,5 L10,0 L0, -5
+      .attr('class', function (d) {
+        return d;
+      })
+      .style('opacity', '0.9');
 
-    let graphGroup = svg
+    let links = svg
       .append('g')
-      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
-
-    graphGroup
+      .attr('id', 'links')
+      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
       .selectAll('.link')
       .data(treeData.links())
       .join('path')
@@ -4705,18 +4737,65 @@ export class AppComponent implements OnInit, AfterViewInit {
           .radius((d) => d.y)
       );
 
-    let node = graphGroup
+    links.attr('class', (d) => {
+      if (d.target.data.type === 'input') {
+        return 'link input';
+      } else if (d.target.data.type === 'output') {
+        return 'link output';
+      } else {
+        return 'link model';
+      }
+    });
+
+    links
+      .on('mouseover', function (d) {
+        // scope.flag = false;
+        // scope.setNewRootData = d;
+        // setArcHighlight(d);
+      })
+      .on('mouseout', function (d) {
+        // removeArcHighlight();
+      });
+
+    let nodes = svg
+      .append('g')
+      .attr('id', 'nodes')
+      .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
       .selectAll('.node')
-      .data(nodes)
+      .data(treeData.descendants())
       .join('g')
       .attr('class', 'node')
       .attr('transform', function (d) {
         return `rotate(${(d.x * 180) / Math.PI - 90})` + `translate(${d.y}, 0)`;
       });
 
-    node.append('circle').attr('r', 5);
+    nodes
+      .append('circle')
+      .attr('r', 6)
+      .attr('class', (d) => {
+        if (d.data.isRoot) {
+          return 'default';
+        } else if (d.data.type == 'input') {
+          return 'input';
+        } else if (d.data.type == 'output') {
+          return 'output';
+        } else {
+          return 'model';
+        }
+      })
+      .style('fill', (d) => {
+        if (d.data.isRoot) {
+          return '#004691';
+        } else if (d.data.type == 'input') {
+          return '#a0a0a0';
+        } else if (d.data.type == 'output') {
+          return '#6699cc';
+        } else {
+          return '#fdb913';
+        }
+      });
 
-    node
+    nodes
       .append('text')
       .attr('font-family', 'sans-serif')
       .attr('font-size', 12)
@@ -4724,14 +4803,129 @@ export class AppComponent implements OnInit, AfterViewInit {
         return d.x < Math.PI ? 8 : -8;
       })
       .attr('dy', '.31em')
-      .attr('text-anchor', function (d) {
+      .attr('text-anchor', (d) => {
         return d.x < Math.PI ? 'start' : 'end';
       })
-      .attr('transform', function (d) {
+      .attr('transform', (d) => {
         return d.x < Math.PI ? null : 'rotate(180)';
       })
-      .text(function (d) {
+      .text((d) => {
         return d.data.name;
+      });
+
+    nodes
+      .on('mouseover', (d) => {
+        // scope.flag = false;
+        // scope.setNewRootData = d;
+        // if (d.type == 'input' || d.type == 'output' || d.isRoot) {
+        //   $('.visual-dd').attr('style', 'display:none;');
+        // } else {
+        //   $('.visual-dd').attr(
+        //     'style',
+        //     'display:block; position:absolute; background:transparent; padding-top:0; width:' +
+        //       125 +
+        //       'px; height:' +
+        //       this.getBoundingClientRect().height +
+        //       'px; z-index:20000; top:' +
+        //       (this.getBoundingClientRect().top - 95) +
+        //       'px; left:' +
+        //       (this.getBoundingClientRect().left +
+        //         this.getBoundingClientRect().width -
+        //         173) +
+        //       'px'
+        //   );
+        //   scope.setDropdown = this.getBoundingClientRect();
+        // }
+        // var getMapped: any = [];
+        // var getData = function () {
+        //   if (d.modelDetails == null && d.mappedModel != null) {
+        //     d.mappedModel.forEach(function (item) {
+        //       getMapped.push(item.name);
+        //     });
+        //     getMapped = getMapped.toString().replace(/,/gi, ', ');
+        //     getMapped = '<b>Models Mapped :</b></br>' + getMapped;
+        //   } else {
+        //     var getDetails =
+        //       '<b>Model Owner : </b> &nbsp;  &nbsp; ' +
+        //       d.modelDetails.modelOwner;
+        //     getDetails +=
+        //       '</br><b>Model Current Version : </b> &nbsp;  &nbsp; ' +
+        //       d.modelDetails.currentVersion;
+        //     getDetails +=
+        //       '</br><b>Model Status : </b> &nbsp;  &nbsp; ' +
+        //       d.modelDetails.modelStatus;
+        //     getMapped = [];
+        //     getMapped.push(getDetails);
+        //   }
+        //   return getMapped.toString();
+        // };
+        // setNodeHighlight(d);
+        // var div;
+        // if (d != undefined) {
+        //   if (!d3.select('#dvTooltip').empty()) {
+        //     div = d3
+        //       .select('#dvTooltip')
+        //       .html(
+        //         '<div class="viz-modal-header viz-function-bar">' +
+        //           d.name +
+        //           '</div><div class="viz-function-content">' +
+        //           getData() +
+        //           '</div>'
+        //       )
+        //       .style(
+        //         'left',
+        //         this.getBoundingClientRect().left +
+        //           this.getBoundingClientRect().width -
+        //           205 +
+        //           'px'
+        //       )
+        //       .style('width', '190px')
+        //       .style('height', '85px')
+        //       .style('overflow', 'auto')
+        //       .style('top', this.getBoundingClientRect().top - 85 + 'px');
+        //   } else {
+        //     div = d3
+        //       .select('body')
+        //       .append('div')
+        //       .attr('class', 'tooltipd3')
+        //       .attr('id', 'dvTooltip')
+        //       .html(
+        //         '<div class="viz-modal-header viz-function-bar">' +
+        //           d.name +
+        //           '</div><div class="viz-function-content">' +
+        //           getData() +
+        //           '</div>'
+        //       )
+        //       .style(
+        //         'left',
+        //         this.getBoundingClientRect().left +
+        //           this.getBoundingClientRect().width -
+        //           205 +
+        //           'px'
+        //       )
+        //       .style('top', this.getBoundingClientRect().top - 85 + 'px')
+        //       .style('width', '190px')
+        //       .style('overflow', 'auto')
+        //       .style('height', '85px')
+        //       .on('mouseover', function (d) {
+        //         d3.select('#dvTooltip')
+        //           .transition()
+        //           .duration(0)
+        //           .style('width', '190px')
+        //           .style('overflow', 'auto')
+        //           .style('height', '85px');
+        //       })
+        //       .on('mouseout', function (d) {
+        //         d3.select('#dvTooltip').remove();
+        //       });
+        //   }
+        // }
+      })
+      .on('mouseout', function (d) {
+        // if (!d3.select('#dvTooltip').empty()) {
+        //   d3.select('#dvTooltip').transition().remove();
+        // }
+        // removeNodeHighlight();
       });
   }
 

@@ -4,3 +4,58 @@
   stroke: #ccc;
   stroke-width: 1.5px;
 }
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px Arial, Helvetica, sans-serif;
+  opacity: 0.5;
+}
+
+circle.model {
+  stroke: #fdb913 !important;
+  fill: #fdb913;
+  stroke-width: 1.5px;
+}
+
+circle.output {
+  stroke: #6699cc !important;
+  fill: #6699cc;
+  stroke-width: 1.5px;
+}
+
+circle.input {
+  stroke: #a0a0a0 !important;
+  fill: #a0a0a0;
+  stroke-width: 1.5px;
+}
+
+circle.lastNode {
+  fill: #fff !important;
+}
+
+path.model {
+  stroke: #fdb913 !important;
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+path.output {
+  stroke: #6699cc !important;
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+path.input {
+  stroke: #a0a0a0 !important;
+  fill: none;
+  stroke-width: 1.5px;
+}
