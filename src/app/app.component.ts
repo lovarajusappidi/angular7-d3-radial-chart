@@ -9,6 +9,92 @@ import * as d3 from 'd3';
 export class AppComponent implements OnInit, AfterViewInit {
   name = 'Angular';
 
+  // root = {
+  //   modelVersionId: 126,
+  //   isRoot: true,
+  //   name: '001 DFAST AFS Model',
+  //   modelDetails: {
+  //     modelOwner: 'Anita Chakravarthy',
+  //     currentVersion: '1',
+  //     modelStatus: 'In Use',
+  //   },
+  //   children: [
+  //     {
+  //       modelVersionId: 132,
+  //       name: '001 Validation Test',
+  //       type: 'model',
+  //       isModelAsInput: true,
+  //       children: [
+  //         {
+  //           modelVersionId: 8,
+  //           name: '030. Interest Rates - AAVP',
+  //           type: 'model',
+  //           isModelAsInput: true,
+  //           children: [],
+  //           mappedModel: null,
+  //           Depth: 1,
+  //           modelDetails: {
+  //             modelOwner: '',
+  //             currentVersion: '0.0',
+  //             modelStatus: '',
+  //           },
+  //         },
+  //       ],
+  //       mappedModel: null,
+  //       Depth: 0,
+  //       modelDetails: {
+  //         modelOwner: 'admin',
+  //         currentVersion: '0.0',
+  //         modelStatus: '',
+  //       },
+  //     },
+  //     {
+  //       modelVersionId: 136,
+  //       name: '002 Validation Test',
+  //       type: 'model',
+  //       isModelAsInput: true,
+  //       children: [
+  //         {
+  //           modelVersionId: 132,
+  //           name: '001 Validation Test',
+  //           type: 'model',
+  //           isModelAsInput: true,
+  //           children: [
+  //             {
+  //               modelVersionId: 8,
+  //               name: '030. Interest Rates - AAVP',
+  //               type: 'model',
+  //               isModelAsInput: true,
+  //               children: [],
+  //               mappedModel: null,
+  //               Depth: 3,
+  //               modelDetails: {
+  //                 modelOwner: '',
+  //                 currentVersion: '0.0',
+  //                 modelStatus: '',
+  //               },
+  //             },
+  //           ],
+  //           mappedModel: null,
+  //           Depth: 1,
+  //           modelDetails: {
+  //             modelOwner: 'admin',
+  //             currentVersion: '0.0',
+  //             modelStatus: '',
+  //           },
+  //         },
+  //       ],
+  //       mappedModel: null,
+  //       Depth: 0,
+  //       modelDetails: {
+  //         modelOwner: '',
+  //         currentVersion: '3',
+  //         modelStatus: '',
+  //       },
+  //     },
+  //   ],
+  // };
+
   root = {
     modelVersionId: 10208,
     isRoot: true,
